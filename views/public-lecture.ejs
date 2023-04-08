@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="icon" type="image/png" href="/images/slido.png" />
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/css/public-lecture.css" />
+
+    <script type="text/javascript">
+      $(document).keyup(function (event) {
+        if ($("#question").is(":focus") && event.key == "Enter") {
+          sendQuestion();
+        }
+      });
+      $(document).ready(function () {
+        $(".alert")
+          .delay(2000)
+          .slideUp(200, function () {
+            $(this).alert("close");
+            if (window.location.search) {
+              window.location.search = "";
+            }
+          });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="row">
+      <% if (typeof errors != 'undefined') { %> <% errors.forEach(error => { %>
+      <div class="alert alert-danger" role="alert"><%= error.message %></div>
+      <% }) %> <% } %> <% if(messages.success_msg) { %>
+      <div class="alert alert-success" role="alert">
+        <%= messages.success_msg %>
+      </div>
+
+      <% } %> <% if (messages.error) { %>
+      <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+      <% } %>
+      <div class="col-sm-6">
+        <div class="panel panel-info">
+          <div class="panel-body">
+            <h3>
+              <span class="label label-primary" style="margin-right: 15px"
+                ><%=lecture.code %></span
+              ><%=lecture.name %>
+            </h3>
+          </div>
+          <div class="panel-footer">
+            <div
+              style="
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                height: 360px;
+                margin-bottom: 7px;
+              "
+            >
+              <img
+                src="/dashboard/lectures-cover?filename=<%=lecture.image_filename %>"
+                alt="Lecture Cover"
+                style="width: -webkit-fill-available;"
+              />
+            </div>
+            <div class="row lecture-row">
+              <div class="col-sm-6">
+                <span class="glyphicon glyphicon-user lecture-icon"></span
+                >Lecturer
+              </div>
+              <div class="col-sm-6">
+                <span class="lecture-label"><%=lecture.lecturer %></span>
+              </div>
+            </div>
+            <div class="row lecture-row">
+              <div class="col-sm-6">
+                <span class="glyphicon glyphicon-calendar lecture-icon"></span
+                >Date
+              </div>
+              <div class="col-sm-6">
+                <span class="lecture-label"
+                  ><%=lecture.lecture_date_time %></span
+                >
+              </div>
+            </div>
+            <div class="row lecture-row">
+              <div class="col-sm-6">
+                <span class="glyphicon glyphicon-play lecture-icon"></span>Time
+              </div>
+              <div class="col-sm-6">
+                <span class="lecture-label"><%=lecture.start_time %></span>
+              </div>
+            </div>
+            <div class="row lecture-row">
+              <div class="col-sm-6">
+                <span class="glyphicon glyphicon-time lecture-icon"></span
+                >Duration (min)
+              </div>
+              <div class="col-sm-6">
+                <span class="lecture-label"><%=lecture.duration %></span>
+              </div>
+            </div>
+            <div class="row lecture-row">
+              <div class="col-sm-6">
+                <span class="glyphicon glyphicon-repeat lecture-icon"></span
+                >Schedule
+              </div>
+              <div class="col-sm-6">
+                <span class="lecture-label"><%=lecture.schedule %></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="panel panel-info">
+          <div class="panel-body">
+            <h3>
+              <span
+                class="glyphicon glyphicon-question-sign"
+                style="margin-right: 5px; color: #08af95"
+              ></span
+              >Questions
+            </h3>
+          </div>
+          <div class="panel-footer">
+            <ul
+              id="questionList"
+              class="list-group list-group-flush"
+              style="height: 450px; overflow-y: auto"
+            ></ul>
+
+            <%if(isAdminOrLecture === false) {%>
+            <div class="input-group">
+              <input
+                id="question"
+                type="text"
+                class="form-control"
+                placeholder="- Enter question -"
+                onent
+              />
+              <div class="input-group-btn">
+                <button class="btn btn-success" onclick="sendQuestion()">
+                  <span
+                    class="glyphicon glyphicon-send"
+                    style="margin-right: 10px"
+                  ></span>
+                  Send
+                </button>
+              </div>
+            </div>
+            <div class="mark-section">
+              <form
+                action="/public/lectures/<%=scheduledLectureId %>/guests/<%=username %>"
+                method="POST"
+                class="form-container"
+                id="markLectureForm"
+                style="width: 100%"
+              >
+                <div style="display: flex; flex-direction: column">
+                  <h5 class="mark-label">
+                    Please rate the lecture using the following scale:
+                  </h5>
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: row;
+                      justify-content: space-between;
+                    "
+                  >
+                    <div>
+                      <label class="radio-inline">
+                        <input
+                          id="excellent"
+                          type="radio"
+                          value="5"
+                          name="mark"
+                        /><span class="mark-label">Excellent</span>
+                      </label>
+                      <label class="radio-inline">
+                        <input
+                          id="very-good"
+                          type="radio"
+                          value="4"
+                          name="mark"
+                        /><span class="mark-label">Very good</span>
+                      </label>
+                      <label class="radio-inline">
+                        <input
+                          id="good"
+                          type="radio"
+                          value="3"
+                          name="mark"
+                        /><span class="mark-label">Good</span>
+                      </label>
+                      <label class="radio-inline">
+                        <input
+                          id="average"
+                          type="radio"
+                          value="2"
+                          name="mark"
+                        /><span class="mark-label">Average</span>
+                      </label>
+                      <label class="radio-inline">
+                        <input
+                          id="poor"
+                          type="radio"
+                          value="1"
+                          name="mark"
+                        /><span class="mark-label">Poor</span>
+                      </label>
+                    </div>
+                    <div>
+                      <button
+                        type="submit"
+                        class="btn btn-sm btn-default"
+                        id="submitRegister"
+                      >
+                        <span
+                          class="glyphicon glyphicon-star"
+                          style="margin-right: 10px; color: #08af95"
+                        ></span
+                        ><span style="color: #08af95; font-weight: bold"
+                          >Rate</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <%}%>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var socket = io.connect("ws://localhost:3000");
+
+      socket.on("question_from_server", function (d) {
+        let list = document.getElementById("questionList");
+        if (!d.is_hidden) {
+          let li = document.createElement("li");
+          var isAnswered = !d.is_answered
+            ? "<span class='<%=answerIcon%>' style='color: blue; margin-left: 10px; cursor: pointer;' onClick='answerQuestion(\"" +
+              d.index +
+              "\")'><span style='margin-left:3px;'><%if(isAdminOrLecture === true){%>Answer<%}%></span></span>"
+            : "<span class='glyphicon glyphicon-ok' style='color: limegreen; margin-left: 10px; font-size: 12px;'>Answered</span>";
+          li.innerHTML =
+            "<div style='display: flex; flex-direction: column'><div style='font-size: 10px; color: #08af95'><span class='glyphicon glyphicon-user' style='margin-right: 5px; font-size: 9px;'></span>" +
+            d.username +
+            "<span class='glyphicon glyphicon-time' style='margin-left: 5px;'></span><span style='margin-left: 5px;'>" +
+            d.date +
+            "</span></div><div style='display: flex; flex-direction: row; justify-content: space-between;'><span style='margin-left: 10px; font-size: 16px;'>" +
+            d.question +
+            "</span><div style='align-self: flex-end;'><span class='glyphicon glyphicon-thumbs-up' style='margin-right: 5px; color: limegreen; cursor: pointer;' onClick='sendQuestionLike(\"" +
+            d.index +
+            "\")'><span style='margin-left:3px;'>" +
+            d.likes +
+            "</span></span><span class='glyphicon glyphicon-thumbs-down' onClick='sendQuestionDislike(\"" +
+            d.index +
+            "\")' style='color: red; cursor: pointer;'><span style='margin-left:3px;'>" +
+            d.dislikes +
+            "</span></span>" +
+            "<span class='<%=hideIcon%>' style='color: orange; margin-left: 10px; cursor: pointer;' onClick='hideQuestion(\"" +
+            d.index +
+            "\")'><span style='margin-left:3px;'><%if(isAdminOrLecture === true){%>Hide<%}%></span></span>" +
+            isAnswered +
+            "</div></div></div>";
+          li.setAttribute("class", "list-group-item");
+          list.appendChild(li);
+        }
+        var questionList = document.getElementById("questionList");
+        $("#questionList").scrollTop($("#questionList")[0].scrollHeight);
+      });
+
+      socket.on("all_questions", function (d) {
+        let list = document.getElementById("questionList");
+        while (list.hasChildNodes()) {
+          list.removeChild(list.firstChild);
+        }
+        for (var i = 0; i < d.length; i++) {
+          var item = d[i];
+          if (!item.is_hidden) {
+            let li = document.createElement("li");
+            var questionDateTime = item.date;
+            var question = item.question;
+            var isAnswered = !item.is_answered
+              ? "<span class='<%=answerIcon%>' style='color: blue; margin-left: 10px; cursor: pointer;' onClick='answerQuestion(\"" +
+                i +
+                "\")'><span style='margin-left:3px;'><%if(isAdminOrLecture === true){%>Answer<%}%></span></span>"
+              : "<span class='glyphicon glyphicon-ok' style='color: limegreen; margin-left: 10px; font-size: 12px;'>Answered</span>";
+
+            li.innerHTML =
+              "<div class='question-wrapper' style='display: flex; flex-direction: column'><div style='font-size: 10px; color: #08af95'><span class='glyphicon glyphicon-user' style='margin-right: 5px; font-size: 9px;'></span>" +
+              item.username +
+              "<span class='glyphicon glyphicon-time' style='margin-left: 5px;'></span><span style='margin-left: 5px;'>" +
+              item.date +
+              "</span></div><div style='display: flex; flex-direction: row; justify-content: space-between;'><span style='margin-left: 10px; font-size: 16px;'>" +
+              item.question +
+              "</span><div style='align-self: flex-end;'><span class='glyphicon glyphicon-thumbs-up' style='margin-right: 5px; color: limegreen; cursor: pointer;' onClick='sendQuestionLike(\"" +
+              i +
+              "\")'><span style='margin-left:3px;'>" +
+              item.likes +
+              "</span></span><span class='glyphicon glyphicon-thumbs-down' style='color: red; cursor: pointer;' onClick='sendQuestionDislike(\"" +
+              i +
+              "\")'><span style='margin-left:3px;'>" +
+              item.dislikes +
+              "</span></span>" +
+              "<span class='<%=hideIcon%>' style='color: orange; margin-left: 10px; cursor: pointer;' onClick='hideQuestion(\"" +
+              i +
+              "\")'><span style='margin-left:3px;'><%if(isAdminOrLecture === true){%>Hide<%}%></span></span>" +
+              isAnswered +
+              "</div></div></div>";
+            li.setAttribute("class", "list-group-item");
+            list.appendChild(li);
+          }
+          var questionList = document.getElementById("questionList");
+          $("#questionList").scrollTop($("#questionList")[0].scrollHeight);
+        }
+      });
+
+      function sendQuestion() {
+        let text = document.getElementById("question").value;
+        if (text) {
+          socket.emit("guest_send_question", text);
+          document.getElementById("question").value = "";
+        }
+      }
+
+      function sendQuestionLike(index) {
+        socket.emit("guest_like_question", index);
+      }
+      function sendQuestionDislike(index) {
+        socket.emit("guest_dislike_question", index);
+      }
+      function hideQuestion(index) {
+        socket.emit("hide_question", index);
+      }
+      function answerQuestion(index) {
+        socket.emit("answer_question", index);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+body {
+  background: white;
+  overflow-x: hidden;
+  padding: 0px 40px 40px 40px;
+}
+
+.lecture-icon {
+  margin-right: 10px;
+}
+
+.lecture-label {
+  font-weight: bold;
+}
+
+.panel-info {
+  border: 0px !important;
+}
+
+.panel-footer {
+  padding: 10px 15px;
+  background-color: #f5f5f5;
+  border: 0px !important;
+}
+
+.lecture-row {
+  line-height: 3;
+  font-size: 16px;
+}
+
+.mark-section {
+  display: flex;
+  padding: 10px;
+  margin-top: 15px;
+  border-top: 2px #08af95 solid;
+}
+
+.mark-label {
+  font-size: 12px;
+  font-weight: bold;
+}

@@ -1,0 +1,407 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="icon" type="image/png" href="/images/slido.png" />
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/index.css" />
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#loginModal").on("show.bs.modal", function (e) {
+          $("#email").focus();
+        });
+        $("#logoutAlert").hide();
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get("success");
+        if (myParam == "logout") {
+          $("#logoutAlert").show();
+        }
+        $(".alert")
+          .delay(2000)
+          .slideUp(200, function () {
+            $(this).alert("close");
+            if (window.location.search) {
+              window.location.search = "";
+            }
+          });
+      });
+    </script>
+  </head>
+
+  <body>
+    <% if (typeof errors != 'undefined') { %> <% errors.forEach(error => { %>
+    <div class="alert alert-danger" role="alert"><%= error.message %></div>
+    <% }) %> <% } %> <% if(messages.success_msg) { %>
+    <div class="alert alert-success" role="alert">
+      <%= messages.success_msg %>
+    </div>
+
+    <% } %> <% if (messages.error) { %>
+    <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+    <% } %>
+
+    <div class="alert alert-success" role="alert" id="logoutAlert">
+      <p>You have logged out successfully.</p>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="title">
+            Sl<span style="margin-right: -5px; display: inline-flex">
+              <div style="display: flex; flex-direction: column">
+                <span>ı</span>
+                <span
+                  class="bouncing"
+                  ,
+                  style="color: #139fb8; margin-top: -105px"
+                  >.</span
+                >
+              </div> </span
+            >do
+          </h1>
+        </div>
+        <div class="col-md-12">
+          <h2 class="subtitle">
+            Instant Questions and Answer from your audience
+          </h2>
+        </div>
+        <div class="col-md-12">
+          <h4 class="description">
+            Slido is a web-based tool for real-time audience interaction.
+          </h4>
+        </div>
+        <div class="col-md-12">
+          <div class="btn-group-lg auth-buttons" role="group" aria-label="...">
+            <button
+              type="button"
+              class="btn login-button"
+              data-toggle="modal"
+              data-target="#loginModal"
+            >
+              <span
+                class="glyphicon glyphicon-log-in button-text"
+                aria-hidden="true"
+                style="margin-right: 10px"
+              ></span>
+              <span class="button-text">Log in</span>
+            </button>
+            <button
+              type="button"
+              class="btn register-button"
+              data-toggle="modal"
+              data-target="#registerModal"
+            >
+              <span
+                class="glyphicon glyphicon-pencil button-text"
+                aria-hidden="true"
+                style="margin-right: 10px"
+              ></span>
+              <span class="button-text">Register Now</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal fade login-modal"
+        id="loginModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="edit"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content" style="width: 400px">
+            <div class="modal-header modal-header-auth">
+              <h4 style="width: 100%; color: white">Member login</h4>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Please enter your credentials to continue.</p>
+              <form
+                action="/login"
+                method="POST"
+                class="form-container"
+                id="loginForm"
+              >
+                <div class="input-group">
+                  <span
+                    class="input-group-addon"
+                    id="basic-addon1"
+                    style="font-weight: bold"
+                    >@</span
+                  >
+                  <input
+                    type="email"
+                    class="form-control"
+                    placeholder="- Enter E-mail -"
+                    id="email"
+                    name="email"
+                    autocomplete="off"
+                    required
+                    
+                  />
+                </div>
+                <br />
+                <div class="input-group">
+                  <span class="input-group-addon" id="basic-addon1"
+                    ><span class="glyphicon glyphicon-lock"></span
+                  ></span>
+                  <input
+                    type="password"
+                    class="form-control"
+                    placeholder="-Enter Password -"
+                    id="password"
+                    name="password"
+                    autocomplete="off"
+                    required
+                    
+                  />
+                </div>
+                <div class="modal-footer login-modal-footer">
+                  <button
+                    type="submit"
+                    class="btn btn-success"
+                    id="submitLogin"
+                  >
+                    <span
+                      class="glyphicon glyphicon-log-in"
+                      style="margin-right: 10px"
+                    ></span
+                    ><span>Log in</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal fade register-modal"
+        id="registerModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="edit"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content" style="width: 600px">
+            <div class="modal-header modal-header-auth">
+              <h4 style="width: 100%; color: white">
+                <span
+                  class="glyphicon glyphicon-user"
+                  style="margin-right: 10px"
+                ></span
+                >Register
+              </h4>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form
+                action="/register"
+                method="POST"
+                class="form-container"
+                id="registerForm"
+              >
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <label for="firstName">First name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="firstName"
+                        name="firstName"
+                        placeholder="- Enter First name -"
+                        required
+                        autocomplete="off"
+                        
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group">
+                      <label for="lastName">Last name</label>
+                      <input
+                        type="text"
+                        class="form-control is-valid"
+                        id="lastName"
+                        name="lastName"
+                        placeholder="- Enter Last name -"
+                        required
+                        autocomplete="off"
+                        
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="input-group form-item">
+                      <label for="birthDate">Birth Date</label>
+                      <input
+                        type="date"
+                        class="form-control is-valid datepickerComponent"
+                        id="birthDate"
+                        name="birthDate"
+                        placeholder="- Enter Birth Date -"
+                        required
+                        autocomplete="off"
+                        
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="input-group form-item">
+                      <label for="address">Address</label>
+                      <input
+                        type="text"
+                        class="form-control is-valid"
+                        id="address"
+                        name="address"
+                        placeholder="- Enter Address -"
+                        required
+                        autocomplete="off"
+                        
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group form-item">
+                      <label for="city">City</label>
+                      <input
+                        type="text"
+                        class="form-control is-valid"
+                        id="city"
+                        name="city"
+                        placeholder="- Enter City -"
+                        required
+                        autocomplete="off"
+                        
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group form-item">
+                      <label for="country">Country</label>
+                      <input
+                        type="text"
+                        class="form-control is-valid"
+                        id="country"
+                        name="country"
+                        placeholder="- Enter Country -"
+                        required
+                        autocomplete="off"
+                        
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <label for="email" class="form-item-with-addon"
+                      >E-mail</label
+                    >
+                    <div class="input-group form-item">
+                      <span
+                        class="input-group-addon"
+                        id="basic-addon1"
+                        style="font-weight: bold"
+                        >@</span
+                      >
+                      <input
+                        type="email"
+                        class="form-control"
+                        placeholder="- Enter E-mail -"
+                        id="email"
+                        name="email"
+                        autocomplete="off"
+                        required
+                        
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <label for="password" class="form-item-with-addon"
+                      >Password</label
+                    >
+                    <div class="input-group form-item">
+                      <span class="input-group-addon" id="basic-addon1"
+                        ><span class="glyphicon glyphicon-lock"></span
+                      ></span>
+                      <input
+                        type="password"
+                        class="form-control"
+                        placeholder="-Enter password -"
+                        id="password"
+                        name="password"
+                        autocomplete="off"
+                        required
+                        
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <label for="confirmPassword" class="form-item-with-addon"
+                      >Confirm Password</label
+                    >
+                    <div class="input-group form-item">
+                      <span class="input-group-addon" id="basic-addon1"
+                        ><span class="glyphicon glyphicon-lock"></span
+                      ></span>
+                      <input
+                        type="password"
+                        class="form-control"
+                        placeholder="-Enter Confirm Password -"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        autocomplete="off"
+                        required
+                        
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal-footer login-modal-footer">
+                  <button
+                    type="submit"
+                    class="btn btn-success"
+                    id="submitRegister"
+                  >
+                    <span
+                      class="glyphicon glyphicon-ok"
+                      style="margin-right: 10px"
+                    ></span
+                    ><span>Register</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

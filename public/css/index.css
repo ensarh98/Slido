@@ -1,0 +1,126 @@
+html,
+body {
+  min-width: 100%;
+  min-height: 100%;
+  font-family: Trebuchet MS;
+  background-image: url("../images/background.jpeg");
+  background-position: left top;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.title {
+  color: #08af95;
+  font-size: 60px;
+  margin-top: 60px;
+}
+
+.bouncing {
+  animation: bounce 0.4s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.subtitle {
+  font-weight: bold;
+  margin-top: 60px;
+}
+
+.description {
+  margin-top: 20px;
+  font-style: italic;
+  color: #bdbdbd;
+}
+
+.auth-buttons {
+  margin-top: 100px;
+}
+
+.login-button {
+  background-color: #139fb8;
+}
+
+.register-button {
+  background-color: #08af95;
+}
+
+.button-text {
+  color: white;
+}
+
+a:hover {
+  color: #bdbdbd;
+}
+
+.modal-header-auth {
+  padding: 0px 10px 0px 10px;
+  border-bottom: 0px;
+  background-color: #139fb8;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.login-modal {
+  width: 400px;
+  margin: 40px auto;
+}
+
+.register-modal {
+  width: 600px;
+  margin: 40px auto;
+}
+
+.login-modal-footer {
+  padding: 20px 10px 0px 10px;
+  text-align: right;
+  border-top: 0px;
+}
+
+.form-item {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.form-item-with-addon {
+    margin-top: 8px;
+    margin-bottom: 0px;
+}
+
+.input-frame {
+  position: relative;
+  border: 2px solid #ccc;
+  padding: 10px;
+}
+
+.input-frame:before,
+.input-frame:after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
+}
+
+.input-frame:before {
+  top: -5px;
+  left: -5px;
+}
+
+.input-frame:after {
+  bottom: -5px;
+  right: -5px;
+}
+
+@keyframes bounce {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -10px, 0);
+  }
+}

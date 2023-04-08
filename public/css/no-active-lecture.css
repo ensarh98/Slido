@@ -1,0 +1,40 @@
+html,
+body {
+  min-width: 100%;
+  min-height: 100%;
+  font-family: Trebuchet MS;
+  background-image: url("../images/background.jpeg");
+  background-position: left top;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.description {
+  font-size: 30px;
+  color: #139fb8;
+  padding: 0;
+  margin-bottom: -15px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  display: flex;
+  justify-content: center;
+}
+
+.text-code {
+  color: tomato;
+  font-size: 80px;
+  letter-spacing: 4px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+}

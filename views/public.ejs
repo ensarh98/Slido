@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="icon" type="image/png" href="/images/slido.png" />
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/public.css" />
+
+    <script>
+      $(document).ready(function () {
+        $(".alert")
+          .delay(2000)
+          .slideUp(200, function () {
+            $(this).alert("close");
+          });
+      });
+    </script>
+  </head>
+  <body>
+    <main>
+      <% if (typeof errors != 'undefined') { %> <% errors.forEach(error => { %>
+      <div class="alert alert-danger" role="alert"><%= error.message %></div>
+      <% }) %> <% } %> <% if(messages.success_msg) { %>
+      <div class="alert alert-success" role="alert">
+        <%= messages.success_msg %>
+      </div>
+
+      <% } %> <% if (messages.error) { %>
+      <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+      <% } %>
+
+      <div class="center-text" id="text-to-copy">
+        <p class="description">Please enter the lecture code:</p>
+        <br />
+        <form
+          action="/public"
+          method="POST"
+          class="form-container"
+          id="loginForm"
+        >
+          <div class="row">
+            <div class="col-sm-12 lecture-item-col">
+              <input
+                name="lectureCode"
+                id="lectureCode"
+                data-parsley-errors-container=""
+                autocomplete="off"
+                required
+                type="text"
+                placeholder="- Enter code -"
+                oninput="this.value=this.value.split(' ').join('')"
+              />
+            </div>
+            <div class="col-sm-12 lecture-item-col">
+              <input
+                name="guestUsername"
+                id="guestUsername"
+                data-parsley-errors-container=""
+                autocomplete="off"
+                required
+                type="text"
+                placeholder="- Enter username -"
+                oninput="this.value=this.value.split(' ').join('')"
+              />
+            </div>
+            <div class="col-sm-12 submit-col">
+              <button
+                id="confirmCode"
+                type="submit"
+                class="btn btn-success"
+                style="margin-top: 6px"
+              >
+                <span
+                  style="margin-right: 10px"
+                  class="glyphicon glyphicon-ok"
+                ></span
+                >Confirm
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>
