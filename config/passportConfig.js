@@ -1,7 +1,8 @@
 const LocalStrategy = require("passport-local").Strategy;
-var { pool } = require("./dbConfig");
+const pool = require("./dbConfig");
+
 const bcrypt = require("bcrypt");
-var moment = require("moment");
+const moment = require("moment");
 
 const DATETIME_FORMAT = "DD.MM.YYYY HH:mm:ss";
 

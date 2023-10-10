@@ -374,7 +374,7 @@
                 data-target="#editLectureModal"
                 data-tooltip="tooltip"
                 data-placement="left"
-                title="Ban User"
+                title="Edit Lecture"
                 data-lecture-id="<%=lecture.id %>"
                 data-lecture-code="<%=lecture.code %>"
                 data-lecture-name="<%=lecture.name %>"
@@ -574,17 +574,17 @@
                 class="progress-bar progress-bar-success"
                 style="width: <%= scheduledLecture.answeredQuestionsPct %>%"
               >
-                <%= scheduledLecture.answeredQuestionsPct%>% answered
+                <%= scheduledLecture.answeredQuestionsPct %>% answered
               </div>
               <div
                 class="progress-bar progress-bar-warning progress-bar-striped"
                 style="width: <%= scheduledLecture.unansweredQuestionsPct %>%"
               >
-                <%= scheduledLecture.unansweredQuestionsPct%>% unanswered
+                <%= scheduledLecture.unansweredQuestionsPct %>% unanswered
               </div>
             </div>
             <h3>Questions</h3>
-            <%if(typeof scheduledLecture.questions != 'undefined') {%>
+            <% if(typeof scheduledLecture.questions != 'undefined') { %>
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -597,7 +597,7 @@
                   <th scope="col">Is answered</th>
                 </tr>
               </thead>
-              <% scheduledLecture.questions.forEach(question => {%>
+              <% scheduledLecture.questions.forEach(question => { %>
               <tbody>
                 <tr>
                   <td><%=question.guest %></td>

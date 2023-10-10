@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var { pool } = require("../config/dbConfig");
+var pool = require("../config/dbConfig");
 
 router.get("/:code", function (req, res, next) {
   pool.connect(async function (err, client, done) {
@@ -8,8 +8,7 @@ router.get("/:code", function (req, res, next) {
       return res.send(err);
     }
     res.render("code", { title: "Code", code: req.params.code });
-    });
+  });
 });
-
 
 module.exports = router;

@@ -1,5 +1,4 @@
 var createError = require("http-errors");
-var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
@@ -16,6 +15,8 @@ var dashboardRouter = require("./routes/dashboard");
 var codeRouter = require("./routes/code");
 var publicRouter = require("./routes/public");
 
+require("dotenv").config();
+var express = require("express");
 var app = express();
 
 // view engine setup
@@ -77,6 +78,12 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render("error");
+});
+
+const port = process.env.PORT || 3001;
+
+app.listen(port, () => {
+  console.log(`Server radi na portu ${port}`);
 });
 
 module.exports = app;

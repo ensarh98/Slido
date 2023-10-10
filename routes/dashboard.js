@@ -1,12 +1,13 @@
-var express = require("express");
-var router = express.Router();
-var { pool } = require("../config/dbConfig");
-var moment = require("moment");
-var multer = require("multer");
-var path = require("path");
-var fs = require("fs");
+const { Router } = require("express");
+var router = Router();
+const pool = require("../config/dbConfig");
+const moment = require("moment");
+const multer = require("multer");
+const { diskStorage } = multer;
+const { extname } = require("path");
+const { readFile } = require("fs");
 
-var schedule = require("node-schedule");
+const { scheduleJob } = require("node-schedule");
 
 const DATE_FORMAT = "DD.MM.YYYY";
 const DATETIME_FORMAT = "DD.MM.YYYY HH:mm:ss";
@@ -505,7 +506,7 @@ router.get("/lectures-cover", (req, res) => {
   var imagePath = filename
     ? "lecture-covers/" + filename
     : "images/no_image.jpg";
-  fs.readFile("./public/" + imagePath, function (err, data) {
+  readFile("./public/" + imagePath, function (err, data) {
     if (err) throw err;
 
     res.writeHead(200, {
@@ -521,12 +522,12 @@ router.get("/users/:id", checkNotAuthenticated, admin.deleteUser);
 router.post("/users/ban", checkNotAuthenticated, admin.banUser);
 router.post("/users", checkNotAuthenticated, admin.updateUser);
 
-var storage = multer.diskStorage({
+var storage = diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./public/lecture-covers");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, Date.now() + extname(file.originalname));
   },
 });
 
@@ -572,16 +573,16 @@ function checkNotAuthenticated(req, res, next) {
   res.redirect("/");
 }
 
-schedule.scheduleJob(" */1 * * * *", function () {
+scheduleJob(" */1 * * * *", function () {
   pool.connect(function (err, client, done) {
     if (err) {
       return res.send(err);
     }
     client.query(
       `INSERT INTO scheduled_lectures(lecture_id, lecture_date_time)
-      select lecs.id, date_trunc('day', CURRENT_DATE) + lecs.start_time from (select l.id, l.start_date, l.end_date, l.start_time, l.schedule, 
-        (select sl.lecture_date_time from scheduled_lectures sl where sl.lecture_id = l.id order by sl.lecture_date_time desc limit 1) as last_lecture 
-        from lectures l) lecs 
+      select lecs.id, date_trunc('day', CURRENT_DATE) + lecs.start_time from (select l.id, l.start_date, l.end_date, l.start_time, l.schedule,
+        (select sl.lecture_date_time from scheduled_lectures sl where sl.lecture_id = l.id order by sl.lecture_date_time desc limit 1) as last_lecture
+        from lectures l) lecs
         where lecs.start_date::date <= CURRENT_DATE and lecs.end_date::date >= CURRENT_DATE
         and ((CASE WHEN lecs.schedule = 'DAILY' and (DATE_TRUNC('day', coalesce(lecs.last_lecture + INTERVAL '1 day', CURRENT_DATE)) = DATE_TRUNC('day', CURRENT_DATE)) then true ELSE false end) = true
         OR (CASE WHEN lecs.schedule = 'WEEKLY' and (DATE_TRUNC('day',coalesce(lecs.last_lecture + INTERVAL '7 day', CURRENT_DATE)) = DATE_TRUNC('day',CURRENT_DATE)) then true ELSE false end) = true
@@ -592,7 +593,7 @@ schedule.scheduleJob(" */1 * * * *", function () {
       function (err, res) {
         done();
         if (err) {
-          console.log(err.stack);
+          return res.send(err);
         }
         if (res.rows?.length > 0) {
           console.log("Lecture successfully created at " + new Date());

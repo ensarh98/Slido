@@ -1,7 +1,10 @@
-var express = require("express");
-var router = express.Router();
-var { pool } = require("../config/dbConfig");
+const { Router } = require("express");
+var router = Router();
+const pool = require("../config/dbConfig");
 const bcrypt = require("bcrypt");
+require("dotenv").config();
+var express = require("express");
+var app = express();
 
 router.post("/", function (req, res, next) {
   pool.connect(async function (err, client, done) {

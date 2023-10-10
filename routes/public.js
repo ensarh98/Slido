@@ -1,7 +1,7 @@
-var express = require("express");
-var router = express.Router();
-var { pool } = require("../config/dbConfig");
-var moment = require("moment");
+const { Router } = require("express");
+var router = Router();
+const pool = require("../config/dbConfig");
+const moment = require("moment");
 
 const DATE_FORMAT = "DD.MM.YYYY";
 const DATETIME_FORMAT = "DD.MM.YYYY HH:mm:ss";
@@ -11,7 +11,7 @@ var questions = [];
 var forbidden_words = [];
 var idevi = [];
 
-var public = {
+var Public = {
   joinToLecture: function (req, res, next) {
     pool.connect(async function (err, client, done) {
       let errors = [];
@@ -372,8 +372,8 @@ setInterval(() => {
 router.get("/", function (req, res, next) {
   res.render("public", { title: "Public" });
 });
-router.post("/", public.joinToLecture, public.insertLectureGuest);
-router.post("/lectures/:id/guests/:username", public.rateLecture);
-router.get("/lectures/:id/guests/:username", public.lectureDetails);
+router.post("/", Public.joinToLecture, Public.insertLectureGuest);
+router.post("/lectures/:id/guests/:username", Public.rateLecture);
+router.get("/lectures/:id/guests/:username", Public.lectureDetails);
 
 module.exports = router;
