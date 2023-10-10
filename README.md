@@ -18,6 +18,7 @@ Ako želite pokrenuti ovaj projekt lokalno na svom računalu, slijedite sljedeć
 3. Instalirajte potrebne ovisnosti pomoću npm-a:
    npm install
 4. Pokrenite potrebne migracije za bazu podataka koje se nalaze u direktoriju doc:
-   Prvo migrations.sql, zatim seed.sql
+   - migrations.sql
+   - seed.sql (email: admin@pmf.ba, pw: admin123)
 5. Pokrenite aplikaciju:
    npm start
