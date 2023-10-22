@@ -2,8 +2,7 @@
 
 Slido je aplikacija koja će pomoći u interakciji publike tokom predavanja, konferencija i drugih sličnih događaja.
 Ova aplikacija je dizajnirana kako bi omogućila interakciju između publike i predavača na predavanjima, konferencijama i sličnim događajima. 
-Sadrži module za administratore sistema, predavače i publiku. Administratori upravljaju korisnicima i događajima, predavači kreiraju predavanja i odgovaraju na pitanja, 
-dok publika prati predavanja, postavlja pitanja i odobrava druga pitanja. Aplikacija olakšava organizaciju i interakciju tokom događaja.
+Sadrži module za administratore sistema, predavače i publiku. Administratori upravljaju korisnicima i događajima, predavači kreiraju predavanja i odgovaraju na pitanja, dok publika prati predavanja, postavlja pitanja i odobrava druga pitanja. Aplikacija olakšava organizaciju i interakciju tokom događaja.
 
 ## Korištene Tehnologije
 
@@ -15,7 +14,7 @@ Ako želite pokrenuti ovaj projekt lokalno na svom računalu, slijedite sljedeć
 
 1. Klonirajte ovaj repozitorij na svoje računalo:
    git clone https://github.com/vaš-korisnički-naziv/repozitorij.git
-3. Instalirajte potrebne ovisnosti pomoću npm-a:
+3. Instalirajte potrebne biblioteke pomoću npm-a:
    npm install
 4. Pokrenite potrebne migracije za bazu podataka koje se nalaze u direktoriju doc:
    - migrations.sql
