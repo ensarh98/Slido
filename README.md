@@ -12,10 +12,8 @@ U razvoju ove aplikacije, koristio sam PostgreSQL kao bazu podataka i Node.js ka
 
 Ako želite pokrenuti ovaj projekt lokalno na svom računalu, slijedite sljedeće korake:
 
-1. Klonirajte ovaj repozitorij na svoje računalo:
-   git clone https://github.com/vaš-korisnički-naziv/repozitorij.git
-3. Instalirajte potrebne biblioteke pomoću npm-a:
-   npm install
+1. Klonirajte ovaj repozitorij na svoje računalo
+3. Instalirajte potrebne biblioteke pomoću "npm install"
 4. Pokrenite potrebne migracije za bazu podataka koje se nalaze u direktoriju doc:
    - migrations.sql
    - seed.sql (email: admin@pmf.ba, pw: admin123)
