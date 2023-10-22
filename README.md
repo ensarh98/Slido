@@ -12,7 +12,7 @@ U razvoju ove aplikacije, koristio sam PostgreSQL kao bazu podataka i Node.js ka
 
 Ako želite pokrenuti ovaj projekt lokalno na svom računalu, slijedite sljedeće korake:
 
-1. Klonirajte ovaj repozitorij na svoje računalo
+1. Klonirajte projekat na svoje računalo
 3. Instalirajte potrebne biblioteke pomoću "npm install"
 4. Pokrenite potrebne migracije za bazu podataka koje se nalaze u direktoriju doc:
    - migrations.sql
