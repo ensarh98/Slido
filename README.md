@@ -6,13 +6,13 @@ Sadrži module za administratore sistema, predavače i publiku. Administratori u
 
 ## Korištene Tehnologije
 
-U razvoju ove aplikacije, koristio sam PostgreSQL kao bazu podataka i Node.js kao backend okvir, dok sam za izradu korisničkog interfejsa koristio EJS.
+U razvoju ove aplikacije, koristio sam PostgreSQL kao bazu podataka i Node.js kao backend okruženje, dok sam za izradu korisničkog interfejsa koristio EJS.
 
 ## Instalacija
 
-Ako želite pokrenuti ovaj projekt lokalno na svom računalu, slijedite sljedeće korake:
+Ako želite pokrenuti ovaj projekt lokalno na svom računaru, slijedite sljedeće korake:
 
-1. Klonirajte projekat na svoje računalo
+1. Klonirajte projekat na svoj računar
 3. Instalirajte potrebne biblioteke pomoću "npm install"
 4. Pokrenite potrebne migracije za bazu podataka koje se nalaze u direktoriju doc:
    - migrations.sql
